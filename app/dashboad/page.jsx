@@ -1,9 +1,10 @@
 import React from 'react'
-import Navbadah from './Navbadah'
+import FitnessPage from './Conteiner'
 export default function page() {
   return (
-    <div className='min-h-screen bg-white'>
-      <Navbadah />
+    <div className='min-h-screen bg-neutral-900'>
+   
+      <FitnessPage />
     </div>
   )
 }
