@@ -1,45 +1,24 @@
-
 "use client";
 
 export default function ProductCard({ product }) {
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-300 group">
-      {/* Badges */}
-      <div className="absolute z-10 m-2 flex flex-col space-y-1">
-        {product.isBestSeller && (
-          <span className="bg-black text-white text-xs px-2 py-1 rounded-full font-medium">
-            Mais Vendido
-          </span>
-        )}
-        {!product.inStock && (
-          <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full">
-            Esgotado
-          </span>
-        )}
-        {product.isNew && (
-          <span className="bg-green-600 text-white text-xs px-2 py-1 rounded-full">
-            Novo
-          </span>
-        )}
-      </div>
-
+    <div className="bg-gray-900 rounded-xl border border-gray-800 hover:border-green-500/50 hover:shadow-xl transition-all duration-300 group">
       {/* Imagem do Produto */}
-      <div className="relative h-48 bg-gray-100 rounded-t-lg overflow-hidden">
-        <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+      <div className="relative h-48 bg-gray-800 rounded-t-xl overflow-hidden">
+        <div className="w-full h-full flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
           <span className="text-gray-400 text-sm">Imagem do Produto</span>
         </div>
       </div>
 
       {/* Conteúdo do Card */}
-      <div className="p-4">
+      <div className="p-6">
         {/* Marca */}
-        <div className="flex justify-between items-start mb-2">
-          <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded border border-green-200">
+        <div className="flex justify-between items-start mb-3">
+          <span className="text-xs font-medium text-green-400 px-2 py-1 rounded border border-green-500/30">
             {product.brand}
           </span>
           <div className="flex items-center space-x-1">
-            <span className="text-yellow-400"></span>
-            <span className="text-sm text-gray-700 font-medium">
+            <span className="text-sm text-gray-300 font-medium">
               {product.rating}
             </span>
             <span className="text-xs text-gray-500">
@@ -48,17 +27,17 @@ export default function ProductCard({ product }) {
           </div>
         </div>
 
-        {/* Nome do Produto */}
-        <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 leading-tight">
+        {/* Nome do Produto - Simplificado */}
+        <h3 className="font-semibold text-white mb-3 line-clamp-2 leading-tight text-lg">
           {product.name}
         </h3>
 
-        {/* Características */}
-        <div className="mb-3">
-          <ul className="text-xs text-gray-600 space-y-1">
+        {/* Características - Mantendo apenas as essenciais */}
+        <div className="mb-4">
+          <ul className="text-sm text-gray-300 space-y-2">
             {product.features.slice(0, 2).map((feature, index) => (
               <li key={index} className="flex items-center">
-                <span className="w-1.5 h-1.5 bg-green-500 rounded-full mr-2"></span>
+                <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
                 {feature}
               </li>
             ))}
@@ -66,9 +45,9 @@ export default function ProductCard({ product }) {
         </div>
 
         {/* Preço */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center space-x-2">
-            <span className="text-xl font-bold text-gray-900">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-3">
+            <span className="text-xl font-bold text-white">
               {product.price.toLocaleString('pt-AO')} Kz
             </span>
             {product.originalPrice > product.price && (
@@ -78,7 +57,7 @@ export default function ProductCard({ product }) {
             )}
           </div>
           {product.originalPrice > product.price && (
-            <span className="text-sm font-medium text-green-600 bg-green-50 px-2 py-1 rounded border border-green-200">
+            <span className="text-sm font-medium text-green-400 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20">
               -{Math.round((1 - product.price / product.originalPrice) * 100)}%
             </span>
           )}
@@ -86,15 +65,14 @@ export default function ProductCard({ product }) {
 
         {/* Botão de Ação */}
         <button
-          className={`w-full py-3 px-4 rounded-lg font-medium transition-colors duration-200 ${product.inStock
-            ? 'bg-black hover:bg-gray-800 text-white shadow-md hover:shadow-lg'
-            : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+          className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 transform hover:scale-[1.02] ${product.inStock
+            ? 'bg-green-500 hover:bg-green-600 text-black shadow-md hover:shadow-lg'
+            : 'bg-gray-800 text-gray-400 cursor-not-allowed'
             }`}
           disabled={!product.inStock}
         >
           {product.inStock ? (
-            <span className="flex items-center justify-center space-x-2">
-
+            <span className="flex items-center justify-center">
               <span>Adicionar ao Carrinho</span>
             </span>
           ) : (

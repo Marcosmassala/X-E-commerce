@@ -58,7 +58,7 @@ export default function Carrinho() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-950">
       <Navbar />
       
       <div className="py-8">

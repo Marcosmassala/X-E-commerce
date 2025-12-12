@@ -2,12 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { Search, Calendar } from 'lucide-react';
-import Estatisticas from './estatisticas';
+import Estatisticas from './estatisticas/analytcs';
 import Pedidos from './pedidos';
-import Sidebar from './sidebar'; 
-import Navbar from '@/components/Navbar';   
+import Sidebar from './sidebar';
 
-// Dados mockados com produtos proteicos em KZ
 const mockOrders = [
   {
     id: 'ORD-001',
@@ -19,7 +17,7 @@ const mockOrders = [
     quantity: 2
   },
   {
-    id: 'ORD-002', 
+    id: 'ORD-002',
     date: '2024-01-14',
     productName: 'Creatina Monohidratada',
     price: 8000,
@@ -90,13 +88,11 @@ export default function OrderHistory() {
   const [dateFilter, setDateFilter] = useState('');
 
   useEffect(() => {
-    // Simulando carregamento de dados
     setOrders(mockOrders);
   }, []);
 
   const handleViewDetails = (order) => {
     console.log('Visualizar detalhes do pedido:', order);
-    // Aqui você pode abrir um modal ou navegar para detalhes
   };
 
   const clearFilters = () => {
@@ -106,32 +102,24 @@ export default function OrderHistory() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
+    <div className="flex h-screen bg-black"> {/* Alterado para bg-black */}
       <Sidebar />
       
-      {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Navbar */}
-        <Navbar />
-        
-        {/* Page Content */}
         <main className="flex-1 overflow-auto p-6">
           <div className="space-y-6">
             {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
-                <h1 className="text-2xl font-bold text-black">Histórico de Pedidos</h1>
-                <p className="text-gray-600">Gerencie e visualize todos os pedidos de suplementos</p>
+                <h1 className="text-2xl font-bold text-white">Histórico de Pedidos</h1> {/* Alterado para text-white */}
+                <p className="text-gray-300">Gerencie e visualize todos os pedidos de suplementos</p> {/* Alterado para text-gray-300 */}
               </div>
-              {/* Botão de exportar removido */}
             </div>
 
-            {/* Estatísticas */}
             <Estatisticas orders={orders} />
 
             {/* Filtros */}
-            <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+            <div className="bg-gray-900 p-4 rounded-xl border border-gray-800 shadow-sm"> {/* Alterado cores */}
               <div className="flex flex-col sm:flex-row gap-4">
                 {/* Search */}
                 <div className="flex-1">
@@ -142,7 +130,7 @@ export default function OrderHistory() {
                       placeholder="Buscar por produto, cliente ou ID..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      className="w-full pl-10 pr-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 text-white" 
                     />
                   </div>
                 </div>
@@ -151,7 +139,7 @@ export default function OrderHistory() {
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 text-white" 
                 >
                   <option value="all">Todos os status</option>
                   <option value="approved">Aprovado</option>
@@ -166,7 +154,7 @@ export default function OrderHistory() {
                     type="date"
                     value={dateFilter}
                     onChange={(e) => setDateFilter(e.target.value)}
-                    className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                    className="pl-10 pr-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 text-white"
                   />
                 </div>
 
@@ -174,7 +162,7 @@ export default function OrderHistory() {
                 {(searchTerm || statusFilter !== 'all' || dateFilter) && (
                   <button
                     onClick={clearFilters}
-                    className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                    className="px-4 py-2 text-gray-300 border border-gray-700 rounded-lg hover:bg-gray-800 transition-colors" 
                   >
                     Limpar
                   </button>

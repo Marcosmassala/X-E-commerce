@@ -1,4 +1,4 @@
-// components/ListaItens.jsx
+
 "use client";
 
 import { X, Plus, Minus, Truck, Shield, CreditCard } from 'lucide-react';
@@ -13,7 +13,7 @@ export default function ListaItens({ itens, onAtualizarQuantidade, onRemoverItem
 
   return (
     <>
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-950">
         
         {/* Cabeçalho do Carrinho */}
         <div className="px-6 py-4 border-b border-gray-200">
