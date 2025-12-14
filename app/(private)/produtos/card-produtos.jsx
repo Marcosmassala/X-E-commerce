@@ -10,7 +10,7 @@ export default function ProductCard({ product }) {
         </div>
       </div>
 
-      {/* Conteúdo do Card */}
+     
       <div className="p-6">
         {/* Marca */}
         <div className="flex justify-between items-start mb-3">
@@ -27,12 +27,11 @@ export default function ProductCard({ product }) {
           </div>
         </div>
 
-        {/* Nome do Produto - Simplificado */}
         <h3 className="font-semibold text-white mb-3 line-clamp-2 leading-tight text-lg">
           {product.name}
         </h3>
 
-        {/* Características - Mantendo apenas as essenciais */}
+        
         <div className="mb-4">
           <ul className="text-sm text-gray-300 space-y-2">
             {product.features.slice(0, 2).map((feature, index) => (
@@ -44,7 +43,7 @@ export default function ProductCard({ product }) {
           </ul>
         </div>
 
-        {/* Preço */}
+        
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-3">
             <span className="text-xl font-bold text-white">
@@ -63,7 +62,6 @@ export default function ProductCard({ product }) {
           )}
         </div>
 
-        {/* Botão de Ação */}
         <button
           className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 transform hover:scale-[1.02] ${product.inStock
             ? 'bg-green-500 hover:bg-green-600 text-black shadow-md hover:shadow-lg'

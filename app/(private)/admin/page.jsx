@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { Search, Calendar } from 'lucide-react';
-import Estatisticas from './estatisticas/analytcs';
 import Pedidos from './pedidos';
 import Sidebar from './sidebar';
 
@@ -116,7 +115,7 @@ export default function OrderHistory() {
               </div>
             </div>
 
-            <Estatisticas orders={orders} />
+            
 
             {/* Filtros */}
             <div className="bg-gray-900 p-4 rounded-xl border border-gray-800 shadow-sm"> {/* Alterado cores */}

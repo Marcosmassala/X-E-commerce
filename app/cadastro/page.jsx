@@ -24,7 +24,7 @@ const SignupPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Formulário enviado:', formData);
-    // Adicione aqui a lógica de cadastro
+    
   };
 
   return (

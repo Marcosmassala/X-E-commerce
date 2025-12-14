@@ -3,6 +3,7 @@ import Navbar from "../../../components/Navbar"
 import { useState, useEffect } from 'react';
 import FilterSidebar from '../produtos/FiltroSidebar';
 import ProductGrid from '../produtos/grid-produtos';
+import Footer from "../../../components/Footer";
 
 export default function Produtos() {
   const [supplements, setSupplements] = useState([]);
@@ -226,6 +227,7 @@ export default function Produtos() {
           />
         </div>
       </div>
+  <Footer/>
     </div>
   );
 }

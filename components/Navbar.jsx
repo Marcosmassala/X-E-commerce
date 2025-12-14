@@ -101,7 +101,6 @@ const Navbar = () => {
           </div>
         )}
 
-        {/* Mobile Search (always visible below navbar) */}
         <div className="md:hidden px-6 py-3 border-t border-gray-800">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
