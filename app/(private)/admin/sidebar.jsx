@@ -15,13 +15,15 @@ import {
   ChevronLeft,
   ChevronRight,
   LogOut,
-  User
+  User,
+  PlusCircle 
 } from 'lucide-react';
 
 const menuItems = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, path: '/' },
   { id: 'users', label: 'Usuários', icon: Users, path: '/users' },
   { id: 'products', label: 'Produtos', icon: ShoppingCart, path: '/produtos' },
+  { id: 'add-product', label: 'Cadastrar Produto', icon: PlusCircle, path: '/admin/novo-produto' },
   { id: 'analytics', label: 'Analytics', icon: BarChart3, path: '/estatisticas/' },
   { id: 'reports', label: 'Relatórios', icon: FileText, path: '/reports' },
   { id: 'messages', label: 'Mensagens', icon: MessageSquare, path: '/messages' },
