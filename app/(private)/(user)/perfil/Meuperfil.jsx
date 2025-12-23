@@ -104,7 +104,20 @@ export default function PerfilUsuario() {
       {/* Conteúdo Principal */}
       <div className="flex-1 flex flex-col">
         <Navbar />
-       
+        
+        {/* Cabeçalho */}
+        <div className="w-full bg-black border-b border-gray-800 py-6">
+          <div className="px-4 md:px-6 lg:px-8">
+            <h1 className="text-2xl md:text-3xl font-bold text-white">
+              {activeSection === "pedidos" ? "Meus Pedidos" : "Meu Perfil"}
+            </h1>
+            <p className="text-gray-400 mt-2">
+              {activeSection === "pedidos" 
+                ? "Acompanhe e gerencie todos os seus pedidos" 
+                : "Gerencie suas informações pessoais"}
+            </p>
+          </div>
+        </div>
 
         {/* Conteúdo */}
         <div className="flex-1 px-4 md:px-6 lg:px-8 py-4 md:py-6">

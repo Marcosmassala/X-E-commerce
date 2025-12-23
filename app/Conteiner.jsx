@@ -10,16 +10,16 @@ export default function FitnessPage() {
   
   const navItems = [
     { href: "/", label: "HOME" },
-    { href: "/store", label: "STORE" },
-    { href: "/news", label: "NEWS" },
+    { href: "/produtos", label: "produtos" },
+    { href: "/NEW", label: "NEW" },
     { href: "/delivery", label: "DELIVERY" },
   ];
 
   const products = Array(6).fill({
     name: "Creatine XPLODE Power",
     description: "Rápida absorção",
-    price: 29.99,
-    originalPrice: 39.99,
+    price: 29990, 
+    originalPrice: 39990, 
     badge: "NEW",
   });
 
@@ -34,6 +34,16 @@ export default function FitnessPage() {
       { href: "/equipment", label: "Equipamentos" },
       { href: "/clothing", label: "Vestuário" },
     ],
+  };
+
+  
+  const formatKz = (value) => {
+    return value.toLocaleString('pt-AO', {
+      style: 'currency',
+      currency: 'AOA',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).replace('AOA', 'Kz');
   };
 
   return (
@@ -85,7 +95,11 @@ export default function FitnessPage() {
               </div>
 
               <div className="flex items-center gap-2">
-                <button className="group relative rounded-full p-2 hover:bg-gray-800 transition-colors duration-200">
+                {/* ÍCONE DO CARRINHO COM LINK */}
+                <Link 
+                  href="/carrinho"
+                  className="group relative rounded-full p-2 hover:bg-gray-800 transition-colors duration-200"
+                >
                   <ShoppingCart 
                     size={20} 
                     className="group-hover:text-green-400 transition-colors" 
@@ -93,11 +107,15 @@ export default function FitnessPage() {
                   <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-green-500 text-xs font-bold text-black">
                     {cartItems}
                   </span>
-                </button>
+                </Link>
 
-                <button className="rounded-full p-2 hover:bg-gray-800 transition-colors duration-200">
+                {/* ÍCONE DO PERFIL COM LINK */}
+                <Link 
+                  href="/perfil"
+                  className="rounded-full p-2 hover:bg-gray-800 transition-colors duration-200"
+                >
                   <User size={20} className="hover:text-green-400 transition-colors" />
-                </button>
+                </Link>
               </div>
             </div>
           </nav>
@@ -162,23 +180,7 @@ export default function FitnessPage() {
             Whey Protein • Creatina • Pré-treino • BCAA • Vitaminas
           </span>
         </p>
-        {/*
-        <div className="flex flex-col sm:flex-row gap-4 pt-4">
-          <button className="group relative bg-gradient-to-r from-green-500 to-emerald-600 text-black font-bold px-8 py-4 rounded-full hover:shadow-2xl hover:shadow-green-500/30 transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0">
-            <span className="relative z-10 flex items-center justify-center gap-2">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-              COMPRAR AGORA
-            </span>
-            <span className="absolute inset-0 rounded-full bg-gradient-to-r from-green-400 to-green-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-          </button>
-          
-          <button className="border-2 border-gray-800 text-white font-bold px-8 py-4 rounded-full hover:border-green-400 hover:text-green-400 hover:bg-green-400/5 transition-all duration-300">
-            VER TODOS OS PRODUTOS →
-          </button>
-        </div>
-        *}
+        
         
         {/* Estatísticas */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6 pt-8 border-t border-gray-800">
@@ -346,7 +348,7 @@ export default function FitnessPage() {
 </section>
         <section className="container mx-auto px-4 lg:px-8 py-16">
           <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Featured Products</h2>
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Produtos em Destaque</h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
               Descubra nossa seleção premium de produtos para fitness e bem-estar
             </p>
@@ -377,17 +379,19 @@ export default function FitnessPage() {
                   <h3 className="font-semibold text-lg mb-2 text-center">{product.name}</h3>
                   <p className="text-gray-400 text-sm mb-3 text-center">{product.description}</p>
                   <div className="flex items-center justify-center gap-2 mb-4">
-                    <span className="text-green-400 font-bold text-xl">${product.price.toFixed(2)}</span>
+                    <span className="text-green-400 font-bold text-xl">
+                      {formatKz(product.price)}
+                    </span>
                     {product.originalPrice && (
                       <span className="text-gray-500 line-through text-sm">
-                        ${product.originalPrice.toFixed(2)}
+                        {formatKz(product.originalPrice)}
                       </span>
                     )}
                   </div>
                   
                   <button className="w-full bg-green-500 hover:bg-green-600 text-black py-3 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2">
                     <ShoppingCart size={18} />
-                    Add to cart
+                    Adicionar ao Carrinho
                   </button>
                 </div>
               </div>
