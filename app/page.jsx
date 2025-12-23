@@ -1,10 +1,12 @@
 import React from 'react'
-import Carrinho from './(private)/carrinho/page'
-
+import FitnessPage from './Conteiner'
+import Foter from './Footer'
 export default function page() {
   return (
-    <div>
-     
+    <div className='min-h-screen bg-neutral-900'>
+   
+      <FitnessPage />
+<Foter />
     </div>
   )
 }
