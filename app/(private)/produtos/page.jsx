@@ -1,189 +1,97 @@
 "use client";
-import Navbar from "../../../components/Navbar"
-import { useState, useEffect } from 'react';
-import FilterSidebar from '../produtos/FiltroSidebar';
-import ProductGrid from '../produtos/grid-produtos';
+
+import { useState, useMemo, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Navbar from "../../../components/Navbar";
+import FilterSidebar from "../produtos/FiltroSidebar";
+import ProductGrid from "../produtos/grid-produtos";
 import Footer from "../../../components/Footer";
 
 export default function Produtos() {
-  const [supplements, setSupplements] = useState([]);
-  const [filteredSupplements, setFilteredSupplements] = useState([]);
+  const router = useRouter();
+
+  // Proteção de rota (descomente se quiser)
+  /*
+  useEffect(() => {
+    const userType = localStorage.getItem("userType");
+    if (userType !== "USER") {
+      router.replace("/login");
+    }
+  }, [router]);
+  */
+
+  // Categorias disponíveis
+  const categories = [
+    { id: "protein", name: "Proteína", count: 8 },
+    { id: "creatine", name: "Creatina", count: 6 },
+    { id: "pre-workout", name: "Pré-Treino", count: 5 },
+    { id: "bcaa", name: "BCAA", count: 4 },
+    { id: "vitamins", name: "Vitaminas", count: 7 },
+    { id: "weight-gainer", name: "Ganho de Peso", count: 3 },
+    { id: "fat-burner", name: "Queimador de Gordura", count: 4 },
+    { id: "amino-acids", name: "Aminoácidos", count: 3 },
+  ];
+
+  // Lista de suplementos (imutável)
+  const mockSupplements = useMemo(
+    () => [
+      { id: 1, name: "Whey Protein 100% Isolado 2kg", price: 25000, category: "protein", inStock: true, isBestSeller: true, isNew: false },
+      { id: 2, name: "Creatina Monohidratada 300g", price: 12000, category: "creatine", inStock: true, isBestSeller: true, isNew: true },
+      { id: 3, name: "Pré-Treino Explosive Energy", price: 18000, category: "pre-workout", inStock: true, isBestSeller: false, isNew: true },
+      { id: 4, name: "BCAA 2:1:1 300g em Pó", price: 15000, category: "bcaa", inStock: false, isBestSeller: false, isNew: false },
+      { id: 5, name: "Multivitamínico Completo 120 caps", price: 8000, category: "vitamins", inStock: true, isBestSeller: false, isNew: false },
+      { id: 6, name: "Mass Gainers 5kg - Hyper Caloric", price: 32000, category: "weight-gainer", inStock: true, isBestSeller: true, isNew: false },
+      { id: 7, name: "Fat Burner - Thermogenic", price: 22000, category: "fat-burner", inStock: true, isBestSeller: false, isNew: true },
+      { id: 8, name: "L-Glutamine 500g Pure", price: 14000, category: "amino-acids", inStock: true, isBestSeller: false, isNew: false },
+      { id: 9, name: "Whey Protein Concentrado 1kg", price: 15000, category: "protein", inStock: true, isBestSeller: true, isNew: false },
+    ],
+    []
+  );
+
+  // Estados para filtros
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 50000]);
-  const [sortBy, setSortBy] = useState('name');
+  const [sortBy, setSortBy] = useState("name");
 
-  const categories = [
-    { id: 'protein', name: 'Proteína', count: 8 },
-    { id: 'creatine', name: 'Creatina', count: 6 },
-    { id: 'pre-workout', name: 'Pré-Treino', count: 5 },
-    { id: 'bcaa', name: 'BCAA', count: 4 },
-    { id: 'vitamins', name: 'Vitaminas', count: 7 },
-    { id: 'weight-gainer', name: 'Ganho de Peso', count: 3 },
-    { id: 'fat-burner', name: 'Queimador de Gordura', count: 4 },
-    { id: 'amino-acids', name: 'Aminoácidos', count: 3 }
-  ];
-
-  const mockSupplements = [
-    {
-      id: 1,
-      name: 'Whey Protein 100% Isolado 2kg',
-      price: 25000,
-      originalPrice: 30000,
-      rating: 4.8,
-      reviewCount: 347,
-      category: 'protein',
-      inStock: true,
-      isBestSeller: true,
-      isNew: false,
-      features: ['24g de Proteína por dose', 'Baixo em Lactose', 'Sabor Chocolate']
-    },
-    {
-      id: 2,
-      name: 'Creatina Monohidratada 300g',
-      price: 12000,
-      originalPrice: 15000,
-      rating: 4.7,
-      reviewCount: 289,
-      category: 'creatine',
-      inStock: true,
-      isBestSeller: true,
-      isNew: true,
-      features: ['100% Pura Creapure®', 'Melhor Absorção', 'Sem Aditivos']
-    },
-    {
-      id: 3,
-      name: 'Pré-Treino Explosive Energy',
-      price: 18000,
-      originalPrice: 22000,
-      rating: 4.5,
-      reviewCount: 156,
-      category: 'pre-workout',
-      inStock: true,
-      isBestSeller: false,
-      isNew: true,
-      features: ['Cafeína 300mg', 'Beta-Alanina', 'Foco Mental']
-    },
-    {
-      id: 4,
-      name: 'BCAA 2:1:1 300g em Pó',
-      price: 15000,
-      originalPrice: 18000,
-      rating: 4.6,
-      reviewCount: 203,
-      category: 'bcaa',
-      inStock: false,
-      isBestSeller: false,
-      isNew: false,
-      features: ['Recuperação Muscular', 'Sabor Limão', 'Zero Açúcar']
-    },
-    {
-      id: 5,
-      name: 'Multivitamínico Completo 120 caps',
-      price: 8000,
-      originalPrice: 10000,
-      rating: 4.4,
-      reviewCount: 178,
-      category: 'vitamins',
-      inStock: true,
-      isBestSeller: false,
-      isNew: false,
-      features: ['25 Vitaminas Essenciais', 'Minerais', 'Antioxidantes']
-    },
-    {
-      id: 6,
-      name: 'Mass Gainers 5kg - Hyper Caloric',
-      price: 32000,
-      originalPrice: 38000,
-      rating: 4.3,
-      reviewCount: 94,
-      category: 'weight-gainer',
-      inStock: true,
-      isBestSeller: true,
-      isNew: false,
-      features: ['650kcal por dose', '50g Proteína', 'Carboidratos Complexos']
-    },
-    {
-      id: 7,
-      name: 'Fat Burner - Thermogenic',
-      price: 22000,
-      originalPrice: 26000,
-      rating: 4.2,
-      reviewCount: 167,
-      category: 'fat-burner',
-      inStock: true,
-      isBestSeller: false,
-      isNew: true,
-      features: ['Termogênico Natural', 'Controle de Apetite', 'Energia']
-    },
-    {
-      id: 8,
-      name: 'L-Glutamine 500g Pure',
-      price: 14000,
-      originalPrice: 17000,
-      rating: 4.5,
-      reviewCount: 132,
-      category: 'amino-acids',
-      inStock: true,
-      isBestSeller: false,
-      isNew: false,
-      features: ['Recuperação Muscular', 'Sistema Imunológico', '100% Puro']
-    },
-    {
-      id: 9,
-      name: 'Whey Protein Concentrado 1kg',
-      price: 15000,
-      originalPrice: 18000,
-      rating: 4.4,
-      reviewCount: 215,
-      category: 'protein',
-      inStock: true,
-      isBestSeller: true,
-      isNew: false,
-      features: ['22g Proteína', 'Multi Sabores', 'Alta Qualidade']
-    }
-  ];
-
-  useEffect(() => {
-    setSupplements(mockSupplements);
-    setFilteredSupplements(mockSupplements);
-  }, []);
-
-  useEffect(() => {
-    let filtered = supplements;
+  // Filtra e ordena suplementos
+  const filteredSupplements = useMemo(() => {
+    let filtered = [...mockSupplements];
 
     if (selectedCategories.length > 0) {
-      filtered = filtered.filter(supplement => 
+      filtered = filtered.filter((supplement) =>
         selectedCategories.includes(supplement.category)
       );
     }
 
-    filtered = filtered.filter(supplement => 
-      supplement.price >= priceRange[0] && supplement.price <= priceRange[1]
+    filtered = filtered.filter(
+      (supplement) =>
+        supplement.price >= priceRange[0] && supplement.price <= priceRange[1]
     );
 
-    filtered = [...filtered].sort((a, b) => {
+    filtered.sort((a, b) => {
       switch (sortBy) {
-        case 'price-low':
+        case "price-low":
           return a.price - b.price;
-        case 'price-high':
+        case "price-high":
           return b.price - a.price;
-        case 'rating':
+        case "rating":
           return b.rating - a.rating;
-        case 'bestseller':
-          return (b.isBestSeller === a.isBestSeller) ? 0 : b.isBestSeller ? 1 : -1;
-        case 'name':
+        case "bestseller":
+          return b.isBestSeller === a.isBestSeller ? 0 : b.isBestSeller ? -1 : 1;
+        case "name":
         default:
           return a.name.localeCompare(b.name);
       }
     });
 
-    setFilteredSupplements(filtered);
-  }, [selectedCategories, priceRange, sortBy, supplements]);
+    return filtered;
+  }, [mockSupplements, selectedCategories, priceRange, sortBy]);
 
+  // Funções de filtro
   const toggleCategory = (categoryId) => {
-    setSelectedCategories(prev =>
+    setSelectedCategories((prev) =>
       prev.includes(categoryId)
-        ? prev.filter(id => id !== categoryId)
+        ? prev.filter((id) => id !== categoryId)
         : [...prev, categoryId]
     );
   };
@@ -191,13 +99,13 @@ export default function Produtos() {
   const clearFilters = () => {
     setSelectedCategories([]);
     setPriceRange([0, 50000]);
-    setSortBy('name');
+    setSortBy("name");
   };
 
   return (
     <div className="min-h-screen bg-black">
       <Navbar />
-      
+
       <div className="bg-black text-white py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
@@ -219,7 +127,7 @@ export default function Produtos() {
             setPriceRange={setPriceRange}
             clearFilters={clearFilters}
           />
-          
+
           <ProductGrid
             filteredSupplements={filteredSupplements}
             sortBy={sortBy}
@@ -227,7 +135,8 @@ export default function Produtos() {
           />
         </div>
       </div>
-  <Footer/>
+
+      <Footer />
     </div>
   );
 }

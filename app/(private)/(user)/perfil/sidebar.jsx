@@ -1,4 +1,4 @@
-// components/Sidebar.jsx
+
 "use client";
 
 export default function Sidebar({ activeSection, setActiveSection }) {
