@@ -1,23 +1,24 @@
-
 "use client";
 
-import ProductCard from '../produtos/card-produtos';
+import ProductCard from './card-produtos';
 
 export default function ProductGrid({ 
-  filteredSupplements, 
+  filteredSupplements = [], 
   sortBy, 
   setSortBy 
 }) {
+  const safeSupplements = Array.isArray(filteredSupplements) ? filteredSupplements : [];
+  const totalProducts = safeSupplements.length;
+
   return (
     <div className="lg:w-3/4">
-      {/* Barra de Ordenação */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div className="flex items-center space-x-4">
             <span className="text-sm text-gray-600 font-medium">Ordenar por:</span>
             <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
+              value={sortBy || "name"}
+              onChange={(e) => setSortBy && setSortBy(e.target.value)}
               className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
             >
               <option value="name">Nome A-Z</option>
@@ -27,24 +28,28 @@ export default function ProductGrid({
               <option value="bestseller">Mais Vendidos</option>
             </select>
           </div>
-          
           <div className="text-sm text-gray-600 font-medium">
-            <span className="text-green-600">{filteredSupplements.length}</span> produtos encontrados
+            <span className="text-green-600">{totalProducts}</span> produtos encontrados
           </div>
         </div>
       </div>
 
-      {/* Grid de Produtos */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {filteredSupplements.map(supplement => (
-          <ProductCard key={supplement.id} product={supplement} />
+        {safeSupplements.map((supplement, index) => (
+          <ProductCard 
+            key={supplement?.id ?? `product-${index}`} 
+            product={supplement} 
+          />
         ))}
       </div>
 
-      {/* Mensagem quando não há produtos */}
-      {filteredSupplements.length === 0 && (
+      {totalProducts === 0 && (
         <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
-          <div className="text-gray-400 text-6xl mb-4"></div>
+          <div className="text-gray-400 text-6xl mb-4">
+            <svg className="w-16 h-16 mx-auto text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
           <h3 className="text-lg font-medium text-gray-900 mb-2">
             Nenhum produto encontrado
           </h3>
