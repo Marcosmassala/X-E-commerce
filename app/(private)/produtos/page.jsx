@@ -35,15 +35,15 @@ export default function Produtos() {
   // Lista de suplementos (imutável)
   const mockSupplements = useMemo(
     () => [
-      { id: 1, name: "Whey Protein 100% Isolado 2kg", price: 25000, category: "protein", inStock: true, isBestSeller: true, isNew: false },
-      { id: 2, name: "Creatina Monohidratada 300g", price: 12000, category: "creatine", inStock: true, isBestSeller: true, isNew: true },
-      { id: 3, name: "Pré-Treino Explosive Energy", price: 18000, category: "pre-workout", inStock: true, isBestSeller: false, isNew: true },
-      { id: 4, name: "BCAA 2:1:1 300g em Pó", price: 15000, category: "bcaa", inStock: false, isBestSeller: false, isNew: false },
-      { id: 5, name: "Multivitamínico Completo 120 caps", price: 8000, category: "vitamins", inStock: true, isBestSeller: false, isNew: false },
-      { id: 6, name: "Mass Gainers 5kg - Hyper Caloric", price: 32000, category: "weight-gainer", inStock: true, isBestSeller: true, isNew: false },
-      { id: 7, name: "Fat Burner - Thermogenic", price: 22000, category: "fat-burner", inStock: true, isBestSeller: false, isNew: true },
-      { id: 8, name: "L-Glutamine 500g Pure", price: 14000, category: "amino-acids", inStock: true, isBestSeller: false, isNew: false },
-      { id: 9, name: "Whey Protein Concentrado 1kg", price: 15000, category: "protein", inStock: true, isBestSeller: true, isNew: false },
+      { id: 1, name: "Whey Protein 100% Isolado 2kg", price: 25000, category: "protein", inStock: true, isBestSeller: true, isNew: false, rating: 4.8 },
+      { id: 2, name: "Creatina Monohidratada 300g", price: 12000, category: "creatine", inStock: true, isBestSeller: true, isNew: true, rating: 4.5 },
+      { id: 3, name: "Pré-Treino Explosive Energy", price: 18000, category: "pre-workout", inStock: true, isBestSeller: false, isNew: true, rating: 4.2 },
+      { id: 4, name: "BCAA 2:1:1 300g em Pó", price: 15000, category: "bcaa", inStock: false, isBestSeller: false, isNew: false, rating: 4.0 },
+      { id: 5, name: "Multivitamínico Completo 120 caps", price: 8000, category: "vitamins", inStock: true, isBestSeller: false, isNew: false, rating: 4.1 },
+      { id: 6, name: "Mass Gainers 5kg - Hyper Caloric", price: 32000, category: "weight-gainer", inStock: true, isBestSeller: true, isNew: false, rating: 4.6 },
+      { id: 7, name: "Fat Burner - Thermogenic", price: 22000, category: "fat-burner", inStock: true, isBestSeller: false, isNew: true, rating: 4.3 },
+      { id: 8, name: "L-Glutamine 500g Pure", price: 14000, category: "amino-acids", inStock: true, isBestSeller: false, isNew: false, rating: 4.2 },
+      { id: 9, name: "Whey Protein Concentrado 1kg", price: 15000, category: "protein", inStock: true, isBestSeller: true, isNew: false, rating: 4.7 },
     ],
     []
   );
@@ -57,17 +57,20 @@ export default function Produtos() {
   const filteredSupplements = useMemo(() => {
     let filtered = [...mockSupplements];
 
+    // Filtro por categoria
     if (selectedCategories.length > 0) {
       filtered = filtered.filter((supplement) =>
         selectedCategories.includes(supplement.category)
       );
     }
 
+    // Filtro por faixa de preço
     filtered = filtered.filter(
       (supplement) =>
         supplement.price >= priceRange[0] && supplement.price <= priceRange[1]
     );
 
+    // Ordenação
     filtered.sort((a, b) => {
       switch (sortBy) {
         case "price-low":
@@ -75,7 +78,7 @@ export default function Produtos() {
         case "price-high":
           return b.price - a.price;
         case "rating":
-          return b.rating - a.rating;
+          return (b.rating || 0) - (a.rating || 0); // Protegido contra undefined
         case "bestseller":
           return b.isBestSeller === a.isBestSeller ? 0 : b.isBestSeller ? -1 : 1;
         case "name":
@@ -103,7 +106,7 @@ export default function Produtos() {
   };
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black text-white">
       <Navbar />
 
       <div className="bg-black text-white py-8">
