@@ -169,11 +169,12 @@ export default function FitnessPage() {
       </header>
 
       <main>
-        <section className="relative py-20 lg:py-28 overflow-hidden bg-gradient-to-b from-black">
-          <div className="container mx-auto px-4 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+        {/* Seção Hero com 100vh e tudo visível */}
+        <section className="relative min-h-[calc(100vh-80px)] flex items-center overflow-hidden bg-gradient-to-b from-black">
+          <div className="container mx-auto px-4 lg:px-8 w-full">
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
               
-              <div className="relative z-10 space-y-8">
+              <div className="relative z-10 space-y-6">
                 <div className="inline-block">
                   <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
                     <span className="block text-white">MOLDE O CORPO</span>
@@ -188,10 +189,10 @@ export default function FitnessPage() {
                   acelerar recuperação e transformar sua performance.
                 </p>
                 
-                <div className="space-y-6 pt-4">
+                <div className="space-y-4 pt-2">
                   <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center">
-                      <svg className="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center">
+                      <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
@@ -202,8 +203,8 @@ export default function FitnessPage() {
                   </div>
                   
                   <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center">
-                      <svg className="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center">
+                      <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                       </svg>
                     </div>
@@ -215,7 +216,7 @@ export default function FitnessPage() {
                 </div>
                 
                 {/* Botão para mostrar produtos */}
-                <div className="pt-8">
+                <div className="pt-6">
                   {!showProducts ? (
                     <button 
                       onClick={handleShowProducts}
@@ -236,19 +237,22 @@ export default function FitnessPage() {
                 </div>
               </div>
               
-              <div className="relative">
+              {/* Imagem mais para cima */}
+              <div className="relative -mt-4 lg:-mt-8">
                 <div className="absolute -inset-4 lg:-inset-8 bg-gradient-to-br from-green-500/5 to-emerald-600/5 rounded-3xl blur-2xl"></div>
                 
                 <div className="relative">
                   <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-                    <Image 
-                      src="/imagem2.png" 
-                      alt="Suplementos para transformação corporal" 
-                      width={700}
-                      height={500}
-                      className="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700"
-                      priority
-                    />
+                    <div className="aspect-[4/3] relative">
+                      <Image 
+                        src="/imagem2.png" 
+                        alt="Suplementos para transformação corporal" 
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        priority
+                      />
+                    </div>
                     
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
                     
@@ -323,7 +327,7 @@ export default function FitnessPage() {
                       src="/imagem2.png"
                       alt={product.name}
                       width={200}
-                      height={200}
+                      height={250}
                       className="mx-auto group-hover:scale-105 transition-transform duration-300"
                     />
                     {product.badge && (
