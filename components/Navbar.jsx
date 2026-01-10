@@ -39,7 +39,7 @@ const Navbar = () => {
 
           {/* Center: Desktop Navigation Links */}
           <div className="hidden lg:flex gap-8 items-center">
-            <Link href="#" className="hover:text-green-400 transition-colors duration-200 font-medium">
+            <Link href="/" className="hover:text-green-400 transition-colors duration-200 font-medium">
               HOME
             </Link>
             <Link href="#" className="hover:text-green-400 transition-colors duration-200 font-medium">

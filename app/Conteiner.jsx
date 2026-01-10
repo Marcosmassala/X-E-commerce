@@ -1,18 +1,19 @@
 'use client'
 import Image from "next/image";
 import Link from "next/link";
-import { Search, ShoppingCart, User, Menu } from "lucide-react";
+import { Search, ShoppingCart, User, Menu, X } from "lucide-react";
 import { useState } from "react";
 
 export default function FitnessPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cartItems] = useState(3);
+  const [showProducts, setShowProducts] = useState(false);
   
   const navItems = [
     { href: "/", label: "HOME" },
-    { href: "/produtos", label: "produtos" },
-    { href: "/NEW", label: "NEW" },
-    { href: "/delivery", label: "DELIVERY" },
+    { href: "/produtos", label: "PRODUTOS" },
+    { href: "/NEW", label: "NOVIDADES" },
+    { href: "/delivery", label: "ENTREGA" },
   ];
 
   const products = Array(6).fill({
@@ -36,7 +37,6 @@ export default function FitnessPage() {
     ],
   };
 
-  
   const formatKz = (value) => {
     return value.toLocaleString('pt-AO', {
       style: 'currency',
@@ -44,6 +44,23 @@ export default function FitnessPage() {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     }).replace('AOA', 'Kz');
+  };
+
+  const handleShowProducts = () => {
+    setShowProducts(true);
+    // Rolar suavemente até a seção de produtos
+    setTimeout(() => {
+      const productsSection = document.getElementById('produtos-destaque');
+      if (productsSection) {
+        productsSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
+  };
+
+  const handleCloseProducts = () => {
+    setShowProducts(false);
+    // Rolar de volta para o topo
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -95,7 +112,6 @@ export default function FitnessPage() {
               </div>
 
               <div className="flex items-center gap-2">
-                {/* ÍCONE DO CARRINHO COM LINK */}
                 <Link 
                   href="/carrinho"
                   className="group relative rounded-full p-2 hover:bg-gray-800 transition-colors duration-200"
@@ -109,7 +125,6 @@ export default function FitnessPage() {
                   </span>
                 </Link>
 
-                {/* ÍCONE DO PERFIL COM LINK */}
                 <Link 
                   href="/perfil"
                   className="rounded-full p-2 hover:bg-gray-800 transition-colors duration-200"
@@ -154,258 +169,233 @@ export default function FitnessPage() {
       </header>
 
       <main>
-      <section className="relative min-h-screen overflow-hidden bg-black">
-  <div className="container mx-auto px-4 py-12 lg:px-8 lg:py-20">
-    <div className="grid lg:grid-cols-2 gap-12 items-center">
-      
-      {/* Conteúdo Textual */}
-      <div className="relative z-10 space-y-8">
-        
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-          <span className="block text-white">TRANSFORME</span>
-          <span className="block text-green-400">SEU CORPO</span>
-          <span className="block text-white">
-            COM ATÉ{' '}
-            <span className="relative">
-              50% OFF
-              <span className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full"></span>
-            </span>
-          </span>
-        </h1>
-        
-        <p className="text-lg text-gray-300 md:text-xl max-w-lg">
-         Nossos produtos de alta qualidade combinam tecnologia de ponta com ingredientes premium para atletas exigentes que buscam superar limites e alcançar a excelência física.
-
-<span className="block mt-2 text-green-400 font-semibold">
-            Whey Protein • Creatina • Pré-treino • BCAA • Vitaminas
-          </span>
-        </p>
-        
-        
-        {/* Estatísticas */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-6 pt-8 border-t border-gray-800">
-          <div className="text-center">
-            <div className="text-3xl font-bold text-green-400">+10K</div>
-            <div className="text-sm text-gray-400">Clientes Satisfeitos</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl font-bold text-green-400">24h</div>
-            <div className="text-sm text-gray-400">Entrega Rápida</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl font-bold text-green-400">100%</div>
-            <div className="text-sm text-gray-400">Produtos Originais</div>
-          </div>
-        </div>
-      </div>
-      
-      {/* Imagem dos Produtos */}
-      <div className="relative">
-        {/* Container da imagem */}
-        <div className="relative h-[500px] lg:h-[600px] rounded-3xl overflow-hidden shadow-2xl">
-          <Image
-            src="/imagen1.png"
-            alt="Suplementos de alta performance: Whey Protein, Creatina, Pré-treino e Vitaminas"
-            width={800}
-            height={800}
-            priority
-            className="h-full w-full object-cover object-center"
-            sizes="(max-width: 1024px) 100vw, 50vw"
-          />
-          
-          {/* Overlay gradiente */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-          
-        </div>
-        
-      </div>
-    </div>
-    
-    {/* Scroll indicator */}
-    <div className="flex justify-center pt-12 lg:pt-20">
-      <button 
-        onClick={() => window.scrollBy({ top: window.innerHeight, behavior: 'smooth' })}
-        className="group flex flex-col items-center gap-2 text-gray-400 hover:text-green-400 transition-colors"
-        aria-label="Ver produtos"
-      >
-        <span className="text-sm font-medium">DESCUBRA MAIS</span>
-        <div className="animate-bounce group-hover:animate-none">
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-          </svg>
-        </div>
-      </button>
-    </div>
-  </div>
-</section>
-
-<section className="relative py-20 lg:py-28 overflow-hidden bg-gradient-to-b from-black">
-  <div className="container mx-auto px-4 lg:px-8">
-    <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-      
-      {/* Conteúdo Textual */}
-      <div className="relative z-10 space-y-8">
-        <div className="inline-block">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-            <span className="block text-white">MOLDE O CORPO</span>
-            <span className="block text-green-400">DOS SEUS SONHOS</span>
-          </h2>
-        </div>
-        
-        <p className="text-lg md:text-xl text-gray-300 leading-relaxed max-w-lg">
-          Descubra a revolução em suplementação esportiva. Nossas fórmulas exclusivas são 
-          desenvolvidas com tecnologia de ponta para proporcionar resultados visíveis e 
-          duradouros. Cada produto é cientificamente formulado para maximizar ganhos, 
-          acelerar recuperação e transformar sua performance.
-        </p>
-        
-        <div className="space-y-6 pt-4">
-          <div className="flex items-start gap-4">
-            <div className="flex-shrink-0 w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center">
-              <svg className="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <div>
-              <h4 className="font-bold text-white text-lg mb-1">Resultados Científicos</h4>
-              <p className="text-gray-400">Fórmulas baseadas em pesquisas e estudos avançados</p>
-            </div>
-          </div>
-          
-          <div className="flex items-start gap-4">
-            <div className="flex-shrink-0 w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center">
-              <svg className="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-            </div>
-            <div>
-              <h4 className="font-bold text-white text-lg mb-1">Energia Explosiva</h4>
-              <p className="text-gray-400">Aumente sua performance e resistência nos treinos</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      {/* Container da Imagem */}
-      <div className="relative">
-        {/* Efeito de fundo decorativo */}
-        <div className="absolute -inset-4 lg:-inset-8 bg-gradient-to-br from-green-500/5 to-emerald-600/5 rounded-3xl blur-2xl"></div>
-        
-        <div className="relative">
-          {/* Imagem principal */}
-          <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-            <Image 
-              src="/imagem2.png" 
-              alt="Suplementos para transformação corporal - Ganho muscular e definição" 
-              width={700}
-              height={500}
-              className="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700"
-              priority
-            />
-            
-            {/* Overlay gradiente */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-            
-            {/* Informação do produto na imagem */}
-            <div className="absolute bottom-6 left-6 bg-black/80 backdrop-blur-sm rounded-2xl p-4 max-w-xs border border-green-500/20">
-              <h4 className="font-bold text-white text-lg mb-1">Creatina Monohidratada</h4>
-              <p className="text-green-400 text-sm mb-2">Maximiza força e performance</p>
-              <div className="flex items-center gap-2">
-                <div className="flex text-yellow-400">
-                  {[1,2,3,4,5].map(i => (
-                    <svg key={i} className="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
+        <section className="relative py-20 lg:py-28 overflow-hidden bg-gradient-to-b from-black">
+          <div className="container mx-auto px-4 lg:px-8">
+            <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+              
+              <div className="relative z-10 space-y-8">
+                <div className="inline-block">
+                  <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+                    <span className="block text-white">MOLDE O CORPO</span>
+                    <span className="block text-green-400">DOS SEUS SONHOS</span>
+                  </h2>
                 </div>
-                <span className="text-white text-sm font-semibold">4.8/5</span>
+                
+                <p className="text-lg md:text-xl text-gray-300 leading-relaxed max-w-lg">
+                  Descubra a revolução em suplementação esportiva. Nossas fórmulas exclusivas são 
+                  desenvolvidas com tecnologia de ponta para proporcionar resultados visíveis e 
+                  duradouros. Cada produto é cientificamente formulado para maximizar ganhos, 
+                  acelerar recuperação e transformar sua performance.
+                </p>
+                
+                <div className="space-y-6 pt-4">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center">
+                      <svg className="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-white text-lg mb-1">Resultados Científicos</h4>
+                      <p className="text-gray-400">Fórmulas baseadas em pesquisas e estudos avançados</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center">
+                      <svg className="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-white text-lg mb-1">Energia Explosiva</h4>
+                      <p className="text-gray-400">Aumente sua performance e resistência nos treinos</p>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Botão para mostrar produtos */}
+                <div className="pt-8">
+                  {!showProducts ? (
+                    <button 
+                      onClick={handleShowProducts}
+                      className="px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-black font-bold text-lg rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-green-500/30 flex items-center gap-3"
+                    >
+                      <ShoppingCart size={22} />
+                      VER NOSSOS PRODUTOS
+                    </button>
+                  ) : (
+                    <button 
+                      onClick={handleCloseProducts}
+                      className="px-8 py-4 border-2 border-green-500 text-green-400 hover:bg-green-500 hover:text-black font-bold text-lg rounded-full transition-all duration-300 transform hover:scale-105 flex items-center gap-3"
+                    >
+                      <X size={22} />
+                      FECHAR PRODUTOS
+                    </button>
+                  )}
+                </div>
+              </div>
+              
+              <div className="relative">
+                <div className="absolute -inset-4 lg:-inset-8 bg-gradient-to-br from-green-500/5 to-emerald-600/5 rounded-3xl blur-2xl"></div>
+                
+                <div className="relative">
+                  <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+                    <Image 
+                      src="/imagem2.png" 
+                      alt="Suplementos para transformação corporal" 
+                      width={700}
+                      height={500}
+                      className="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700"
+                      priority
+                    />
+                    
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                    
+                    <div className="absolute bottom-6 left-6 bg-black/80 backdrop-blur-sm rounded-2xl p-4 max-w-xs border border-green-500/20">
+                      <h4 className="font-bold text-white text-lg mb-1">Creatina Monohidratada</h4>
+                      <p className="text-green-400 text-sm mb-2">Maximiza força e performance</p>
+                      <div className="flex items-center gap-2">
+                        <div className="flex text-yellow-400">
+                          {[1,2,3,4,5].map(i => (
+                            <svg key={i} className="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            </svg>
+                          ))}
+                        </div>
+                        <span className="text-white text-sm font-semibold">4.8/5</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-gradient-to-br from-green-500/10 to-emerald-600/10 rounded-full blur-xl"></div>
+                  <div className="absolute -top-6 -right-6 w-24 h-24 bg-gradient-to-br from-green-500/5 to-emerald-600/5 rounded-full blur-xl"></div>
+                </div>
+                
+                <div className="absolute -bottom-4 -right-4 bg-black/90 backdrop-blur-sm border border-green-500/30 rounded-2xl p-3 shadow-xl">
+                  <div className="flex items-center gap-2">
+                    <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
+                      <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <div className="text-white font-bold">GARANTIA</div>
+                      <div className="text-green-400 text-sm">30 DIAS</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          
-          {/* Elementos decorativos flutuantes */}
-          <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-gradient-to-br from-green-500/10 to-emerald-600/10 rounded-full blur-xl"></div>
-          <div className="absolute -top-6 -right-6 w-24 h-24 bg-gradient-to-br from-green-500/5 to-emerald-600/5 rounded-full blur-xl"></div>
-        </div>
-        
-        {/* Selo de garantia */}
-        <div className="absolute -bottom-4 -right-4 bg-black/90 backdrop-blur-sm border border-green-500/30 rounded-2xl p-3 shadow-xl">
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
-              <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-              </svg>
-            </div>
-            <div>
-              <div className="text-white font-bold">GARANTIA</div>
-              <div className="text-green-400 text-sm">30 DIAS</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-        <section className="container mx-auto px-4 lg:px-8 py-16">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Produtos em Destaque</h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              Descubra nossa seleção premium de produtos para fitness e bem-estar
-            </p>
-          </div>
-          
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {products.map((product, index) => (
-              <div
-                key={index}
-                className="bg-gray-900 border border-gray-800 p-6 rounded-2xl shadow-lg hover:shadow-xl hover:border-green-500/50 transition-all duration-300 group"
+        </section>
+
+        {/* Seção de Produtos (aparece apenas quando showProducts é true) */}
+        {showProducts && (
+          <section id="produtos-destaque" className="container mx-auto px-4 lg:px-8 py-16 animate-fadeIn">
+            {/* Cabeçalho com botão de fechar */}
+            <div className="flex justify-between items-center mb-8">
+              <div>
+                <h2 className="text-3xl lg:text-4xl font-bold mb-2">Produtos em Destaque</h2>
+                <p className="text-gray-400 max-w-2xl">
+                  Descubra nossa seleção premium de produtos para fitness e bem-estar
+                </p>
+              </div>
+              
+              <button
+                onClick={handleCloseProducts}
+                className="flex items-center gap-2 px-4 py-2 border border-gray-600 hover:border-red-500 hover:bg-red-500 hover:text-white rounded-full transition-all duration-200 group"
+                aria-label="Fechar produtos"
               >
-                <div className="relative">
-                  <Image
-                    src="/imagem2.png"
-                    alt={product.name}
-                    width={200}
-                    height={200}
-                    className="mx-auto group-hover:scale-105 transition-transform duration-300"
-                  />
-                  {product.badge && (
-                    <div className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
-                      {product.badge}
-                    </div>
-                  )}
-                </div>
-                
-                <div className="mt-6">
-                  <h3 className="font-semibold text-lg mb-2 text-center">{product.name}</h3>
-                  <p className="text-gray-400 text-sm mb-3 text-center">{product.description}</p>
-                  <div className="flex items-center justify-center gap-2 mb-4">
-                    <span className="text-green-400 font-bold text-xl">
-                      {formatKz(product.price)}
-                    </span>
-                    {product.originalPrice && (
-                      <span className="text-gray-500 line-through text-sm">
-                        {formatKz(product.originalPrice)}
-                      </span>
+                <X size={20} className="group-hover:rotate-90 transition-transform duration-300" />
+                <span className="hidden sm:inline">Fechar</span>
+              </button>
+            </div>
+            
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {products.map((product, index) => (
+                <div
+                  key={index}
+                  className="bg-gray-900 border border-gray-800 p-6 rounded-2xl shadow-lg hover:shadow-xl hover:border-green-500/50 transition-all duration-300 group"
+                >
+                  <div className="relative">
+                    <Image
+                      src="/imagem2.png"
+                      alt={product.name}
+                      width={200}
+                      height={200}
+                      className="mx-auto group-hover:scale-105 transition-transform duration-300"
+                    />
+                    {product.badge && (
+                      <div className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                        {product.badge}
+                      </div>
                     )}
                   </div>
                   
-                  <button className="w-full bg-green-500 hover:bg-green-600 text-black py-3 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2">
-                    <ShoppingCart size={18} />
-                    Adicionar ao Carrinho
-                  </button>
+                  <div className="mt-6">
+                    <h3 className="font-semibold text-lg mb-2 text-center">{product.name}</h3>
+                    <p className="text-gray-400 text-sm mb-3 text-center">{product.description}</p>
+                    <div className="flex items-center justify-center gap-2 mb-4">
+                      <span className="text-green-400 font-bold text-xl">
+                        {formatKz(product.price)}
+                      </span>
+                      {product.originalPrice && (
+                        <span className="text-gray-500 line-through text-sm">
+                          {formatKz(product.originalPrice)}
+                        </span>
+                      )}
+                    </div>
+                    
+                    <button className="w-full bg-green-500 hover:bg-green-600 text-black py-3 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2">
+                      <ShoppingCart size={18} />
+                      Adicionar ao Carrinho
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
 
-          <div className="flex justify-center mt-12">
-            <button className="px-8 py-3 border border-gray-600 hover:border-green-400 hover:bg-green-400 hover:text-black rounded-full font-semibold transition-all duration-200">
-              VER MAIS PRODUTOS
-            </button>
-          </div>
-        </section>
+            <div className="flex justify-center mt-12">
+              <Link href="/produtos">
+                <button className="px-8 py-3 border border-gray-600 hover:border-green-400 hover:bg-green-400 hover:text-black rounded-full font-semibold transition-all duration-200">
+                  VER TODOS OS PRODUTOS
+                </button>
+              </Link>
+            </div>
+          </section>
+        )}
       </main>
 
+      {/* Adicionar animação CSS */}
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @keyframes fadeOut {
+          from {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          to {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.5s ease-out;
+        }
+        .animate-fadeOut {
+          animation: fadeOut 0.3s ease-in forwards;
+        }
+      `}</style>
     </div>
   );
 }

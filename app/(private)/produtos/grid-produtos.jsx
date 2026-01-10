@@ -12,22 +12,29 @@ export default function ProductGrid({
 
   return (
     <div className="lg:w-3/4">
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
+      <div className="bg-gray-900 rounded-lg r p-4 mb-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div className="flex items-center space-x-4">
-            <span className="text-sm text-gray-600 font-medium">Ordenar por:</span>
-            <select
-              value={sortBy || "name"}
-              onChange={(e) => setSortBy && setSortBy(e.target.value)}
-              className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
-            >
-              <option value="name">Nome A-Z</option>
-              <option value="price-low">Menor Preço</option>
-              <option value="price-high">Maior Preço</option>
-              <option value="rating">Melhor Avaliado</option>
-              <option value="bestseller">Mais Vendidos</option>
-            </select>
-          </div>
+        <div className="flex items-center space-x-4">
+  <span className="text-sm text-gray-600 font-medium">Ordenar por:</span>
+  <div className="relative">
+    <select
+      value={sortBy || "name"}
+      onChange={(e) => setSortBy && setSortBy(e.target.value)}
+      className="appearance-none rounded-lg  text-white  bg-gray-900 px-4 py-2.5 text-sm font-medium text-gray-800 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500/30 w-48 cursor-pointer"
+    >
+      <option value="name">Nome A-Z</option>
+      <option value="price-low">Menor Preço</option>
+      <option value="price-high">Maior Preço</option>
+      <option value="rating">Melhor Avaliado</option>
+      <option value="bestseller">Mais Vendidos</option> 
+    </select>
+    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+      <svg className="h-5 w-5 text-gray-500 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+      </svg>
+    </div>
+  </div>
+</div>
           <div className="text-sm text-gray-600 font-medium">
             <span className="text-green-600">{totalProducts}</span> produtos encontrados
           </div>
