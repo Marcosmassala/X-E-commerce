@@ -76,7 +76,7 @@ export default function PerfilUsuario() {
       <Sidebar activeSection={activeSection} setActiveSection={setActiveSection} />
 
       <div className="flex-1 flex flex-col">
-        <Navbar />
+   
 
         <div className="w-full bg-black border-b border-gray-800 py-6">
           <div className="px-4 md:px-6 lg:px-8">
