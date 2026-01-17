@@ -217,7 +217,7 @@ export default function DeliveryPage() {
 
       <main className="pb-16">
         {/* Hero Section Entrega */}
-        <section className="relative overflow-hidden bg-gradient-to-b from-black to-gray-900 py-12 md:py-20">
+        <section className="relative overflow-hidden from-black py-12 md:py-20">
           <div className="container mx-auto px-4 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div className="space-y-6">
