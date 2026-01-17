@@ -42,14 +42,14 @@ const Navbar = () => {
             <Link href="/" className="hover:text-green-400 transition-colors duration-200 font-medium">
               HOME
             </Link>
-            <Link href="#" className="hover:text-green-400 transition-colors duration-200 font-medium">
-              STORE
+            <Link href="/produtos" className="hover:text-green-400 transition-colors duration-200 font-medium">
+              Produtos
             </Link>
-            <Link href="#" className="hover:text-green-400 transition-colors duration-200 font-medium">
-              NEWS
+            <Link href="/novidades" className="hover:text-green-400 transition-colors duration-200 font-medium">
+              Novidades
             </Link>
-            <Link href="#" className="hover:text-green-400 transition-colors duration-200 font-medium">
-              DELIVERY
+            <Link href="/entregas" className="hover:text-green-400 transition-colors duration-200 font-medium">
+              Entregas
             </Link>
           </div>
 
@@ -88,14 +88,14 @@ const Navbar = () => {
               <Link href="#" className="hover:text-green-400 transition-colors duration-200 font-medium py-2">
                 HOME
               </Link>
-              <Link href="#" className="hover:text-green-400 transition-colors duration-200 font-medium py-2">
-                STORE
+              <Link href="/produtos" className="hover:text-green-400 transition-colors duration-200 font-medium py-2">
+                Produtos
               </Link>
-              <Link href="#" className="hover:text-green-400 transition-colors duration-200 font-medium py-2">
-                NEWS
+              <Link href="/novidades" className="hover:text-green-400 transition-colors duration-200 font-medium py-2">
+                Novidades
               </Link>
-              <Link href="#" className="hover:text-green-400 transition-colors duration-200 font-medium py-2">
-                DELIVERY
+              <Link href="/entregas" className="hover:text-green-400 transition-colors duration-200 font-medium py-2">
+                Entregas
               </Link>
             </div>
           </div>
