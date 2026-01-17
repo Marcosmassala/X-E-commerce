@@ -29,10 +29,7 @@ export default function FitnessPage() {
       subtitle: "Alta concentração",
       description: "Proteína isolada para recuperação muscular acelerada",
       badge: "NOVO",
-      color: "from-blue-500 to-cyan-600",
-    
-      
-      
+      color: "from-blue-500 to-cyan-600"
     },
     {
       id: 3,

@@ -21,7 +21,7 @@ import {
 
 const menuItems = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, path: '/' },
-  { id: 'users', label: 'Usuários', icon: Users, path: '/users' },
+  { id: 'users', label: 'Usuários', icon: Users, path: '/admin/perfilAdmin' },
   { id: 'products', label: 'Produtos', icon: ShoppingCart, path: '/produtos' },
   { id: 'add-product', label: 'Cadastrar Produto', icon: PlusCircle, path: '/admin/novo-produto' },
   { id: 'analytics', label: 'Analytics', icon: BarChart3, path: '/admin/estatisticas' },
