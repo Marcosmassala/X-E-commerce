@@ -12,9 +12,10 @@ export default function NewPage() {
   const navItems = [
     { href: "/", label: "HOME" },
     { href: "/produtos", label: "PRODUTOS" },
-    { href: "/new", label: "NOVIDADES" },
-    { href: "/delivery", label: "ENTREGA" },
+    { href: "/novidades", label: "NOVIDADES" },
+    { href: "/entregas", label: "ENTREGA" },
   ];
+
 
   const newProducts = [
     {
