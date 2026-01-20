@@ -50,6 +50,19 @@ export default function FitnessPage() {
     }
   ];
   
+  // Declare nextSlide e prevSlide ANTES de usar no useEffect
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  }, [slides.length]);
+
+  const prevSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  }, [slides.length]);
+
+  const goToSlide = (index) => {
+    setCurrentSlide(index);
+  };
+
   // Detectar tamanho da tela
   useEffect(() => {
     const checkMobile = () => {
@@ -62,7 +75,7 @@ export default function FitnessPage() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
   
-  // Auto slide
+  // Auto slide - AGORA nextSlide já está declarado
   useEffect(() => {
     if (showProducts) return; 
     
@@ -71,7 +84,7 @@ export default function FitnessPage() {
     }, 5000);
     
     return () => clearInterval(interval);
-  }, [currentSlide, showProducts]);
+  }, [currentSlide, showProducts, nextSlide]); // Adicione nextSlide como dependência
 
   const products = Array(6).fill({
     name: "Creatine XPLODE Power",
@@ -116,18 +129,6 @@ export default function FitnessPage() {
   const handleCloseProducts = () => {
     setShowProducts(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-  }, [slides.length]);
-
-  const prevSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  }, [slides.length]);
-
-  const goToSlide = (index) => {
-    setCurrentSlide(index);
   };
 
   const currentSlideData = slides[currentSlide];
