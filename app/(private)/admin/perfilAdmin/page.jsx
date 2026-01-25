@@ -65,6 +65,7 @@ export default function AdminProfilePage() {
     pedidosPendentes: 12
   });
 
+  // CORREÇÃO: Adicionado adminData como dependência
   useEffect(() => {
     // Simulação de carregamento de dados
     const loadAdminData = async () => {
@@ -72,7 +73,7 @@ export default function AdminProfilePage() {
       setFormData({ ...adminData });
     };
     loadAdminData();
-  }, []);
+  }, [adminData]); // ← ADICIONADO adminData AQUI
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;

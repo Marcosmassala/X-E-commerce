@@ -1,6 +1,6 @@
 import React from 'react'
 import FitnessPage from './Conteiner'
-import Foter from './Footer'
+import Foter from '../components/Footer'
 export default function page() {
   return (
     <div className='min-h-screen bg-neutral-900'>
