@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import Navbar from "../../../components/Navbar";
+import Navbar from "@/components/Navbar";
 import FilterSidebar from "../produtos/FiltroSidebar";
 import ProductGrid from "../produtos/grid-produtos";
 import Footer from "../../../components/Footer";
@@ -214,7 +214,7 @@ export default function Produtos() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <Navbar />
+     <Navbar />
 
       <div className="bg-black text-white py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

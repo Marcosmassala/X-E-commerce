@@ -442,83 +442,181 @@ export default function FitnessPage() {
 
         {/* Seção de Produtos */}
         {showProducts && (
-          <section id="produtos-destaque" className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 animate-fadeIn">
-            {/* Cabeçalho responsivo */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
-              <div>
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">Produtos em Destaque</h2>
-                <p className="text-gray-400 max-w-2xl text-sm sm:text-base">
-                  Descubra nossa seleção premium de produtos para fitness
-                </p>
-              </div>
+  <section id="produtos-destaque" className="container mx-auto px-4 py-12 animate-fadeIn">
+    {/* Título com efeito de brilho */}
+    <div className="text-center mb-12">
+      <div className="inline-block relative">
+        <h2 className="text-4xl font-bold text-white relative z-10">PRODUTOS PREMIUM</h2>
+        <div className="absolute -inset-1 bg-gradient-to-r from-green-500/20 to-blue-500/20 blur-xl opacity-50"></div>
+      </div>
+      <p className="text-gray-400 mt-3">MELOHORES PRODUTOS </p>
+    </div>
+    
+    {/* Grid de cards espelhados */}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {products.map((product, index) => {
+        const slide = slides[index % slides.length];
+        
+        return (
+          <div key={index} className="perspective-1000">
+            {/* Card com efeito 3D */}
+            <div className="relative group transform transition-all duration-500 hover:scale-[1.02]">
               
-              <button
-                onClick={handleCloseProducts}
-                className="self-end sm:self-center flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 border border-gray-600 hover:border-red-500 hover:bg-red-500 hover:text-white rounded-full transition-all duration-200 group text-sm"
-                aria-label="Fechar produtos"
-              >
-                <X size={16} className="group-hover:rotate-90 transition-transform duration-300" />
-                <span>Fechar</span>
-              </button>
-            </div>
-            
-            {/* Grid de produtos responsivo */}
-            <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-              {products.map((product, index) => (
-                <div
-                  key={index}
-                  className="bg-gray-900 border border-gray-800 p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl hover:border-green-500/50 transition-all duration-300 group"
-                >
+              {/* Efeito de reflexo/espelhado */}
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-green-500/30 via-transparent to-blue-500/30 rounded-3xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              
+              {/* Card principal */}
+              <div className="relative bg-gradient-to-b from-gray-900/90 to-black/90 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-2xl">
+                
+                {/* Efeito de vidro/glassmorphism */}
+                <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent rounded-2xl"></div>
+                
+                {/* Badge tipo iOS */}
+                <div className="absolute top-4 right-4">
                   <div className="relative">
-                    <div className="relative h-48 sm:h-56 md:h-64 w-full">
+                    <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full blur-md opacity-70"></div>
+                    <div className="relative bg-gradient-to-r from-gray-900 to-black border border-white/20 rounded-full px-4 py-1.5">
+                      <span className="text-xs font-semibold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
+                        NOVO
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Imagem com efeito espelhado */}
+                <div className="relative h-56 mb-6">
+                  {/* Reflexo da imagem */}
+                  <div className="absolute -bottom-4 left-0 right-0 h-24 bg-gradient-to-t from-black to-transparent opacity-50 blur-sm"></div>
+                  
+                  {/* Container da imagem */}
+                  <div className="relative h-full w-full bg-gradient-to-br from-gray-900 to-black rounded-2xl border border-white/10 p-4">
+                    <div className={`absolute inset-0 bg-gradient-to-br ${slide.color.replace('from-', 'from-').replace('to-', 'to-')}/10 rounded-2xl`}></div>
+                    
+                    <div className="relative h-full w-full">
                       <Image
-                        src={slides[index % slides.length].image}
+                        src={slide.image}
                         alt={product.name}
                         fill
-                        className="object-contain group-hover:scale-105 transition-transform duration-300"
-                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                        className="object-contain drop-shadow-2xl"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       />
                     </div>
-                    {product.badge && (
-                      <div className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
-                        {product.badge}
-                      </div>
-                    )}
+                    
+                    {/* Efeito de brilho na imagem */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-2xl"></div>
+                  </div>
+                </div>
+                
+                {/* Conteúdo do card */}
+                <div className="relative space-y-4">
+                  {/* Título e descrição */}
+                  <div>
+                    <h3 className="text-xl font-bold text-white mb-2">{slide.title}</h3>
+                    <p className="text-gray-400 text-sm leading-relaxed">{slide.description}</p>
                   </div>
                   
-                  <div className="mt-4 sm:mt-6">
-                    <h3 className="font-semibold text-base sm:text-lg mb-1 sm:mb-2 text-center line-clamp-1">{slides[index % slides.length].title}</h3>
-                    <p className="text-gray-400 text-xs sm:text-sm mb-2 sm:mb-3 text-center">{slides[index % slides.length].subtitle}</p>
-                    <div className="flex items-center justify-center gap-2 mb-3 sm:mb-4 flex-wrap">
-                      <span className="text-green-400 font-bold text-lg sm:text-xl">
+                  {/* Especificações */}
+                  <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-gray-800/50 border border-white/10 flex items-center justify-center">
+                        <Zap className="w-4 h-4 text-green-400" />
+                      </div>
+                      <span className="text-gray-300">Energia</span>
+                    </div>
+                    
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-gray-800/50 border border-white/10 flex items-center justify-center">
+                        <Shield className="w-4 h-4 text-blue-400" />
+                      </div>
+                      <span className="text-gray-300">Seguro</span>
+                    </div>
+                    
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-gray-800/50 border border-white/10 flex items-center justify-center">
+                        <Star className="w-4 h-4 text-yellow-400" />
+                      </div>
+                      <span className="text-gray-300">4.8</span>
+                    </div>
+                  </div>
+                  
+                  {/* Divisor estilizado */}
+                  <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+                  
+                  {/* Preço e ação */}
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="text-2xl font-bold text-white">
                         {formatKz(product.price)}
-                      </span>
+                      </div>
                       {product.originalPrice && (
-                        <span className="text-gray-500 line-through text-xs sm:text-sm">
+                        <div className="text-sm text-gray-500 line-through">
                           {formatKz(product.originalPrice)}
-                        </span>
+                        </div>
                       )}
                     </div>
                     
-                    <button className="w-full bg-green-500 hover:bg-green-600 text-black py-2 sm:py-3 rounded-lg sm:rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2 text-sm sm:text-base active:scale-95">
-                      <ShoppingCart size={14} className="sm:w-4 sm:h-4" />
-                      <span>Adicionar ao Carrinho</span>
+                    {/* Botão estilo iOS */}
+                    <button className="group/btn relative overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-emerald-500/20 blur-xl opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></div>
+                      <div className="relative bg-gradient-to-r from-gray-800 to-gray-900 border border-white/10 group-hover/btn:border-green-500/50 px-6 py-3 rounded-xl flex items-center gap-2 transition-all duration-300 group-hover/btn:scale-105">
+                        <ShoppingCart className="w-4 h-4 group-hover/btn:text-green-400 transition-colors" />
+                        <span className="font-semibold text-sm">Adicionar</span>
+                      </div>
                     </button>
                   </div>
+                  
+                  {/* Info de stock */}
+                  <div className="flex items-center justify-between text-xs text-gray-400">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                      <span>Disponível</span>
+                    </div>
+                    <span>⚡ Entrega rápida</span>
+                  </div>
                 </div>
-              ))}
+              </div>
+              
+              {/* Efeito de reflexo no fundo */}
+              <div className="absolute -z-10 inset-0 bg-gradient-to-t from-green-500/5 via-transparent to-blue-500/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             </div>
-
-            {/* Botão ver todos */}
-            <div className="flex justify-center mt-8 sm:mt-12">
-              <Link href="/produtos" className="w-full sm:w-auto">
-                <button className="w-full sm:w-auto px-6 sm:px-8 py-2.5 sm:py-3 border border-gray-600 hover:border-green-400 hover:bg-green-400 hover:text-black rounded-full font-semibold transition-all duration-200 text-sm sm:text-base">
-                  VER TODOS OS PRODUTOS
-                </button>
-              </Link>
-            </div>
-          </section>
-        )}
+          </div>
+        );
+      })}
+    </div>
+    
+    {/* Botões com efeito espelhado */}
+    <div className="flex flex-col sm:flex-row gap-4 justify-center mt-16">
+      <Link href="/produtos" className="w-full sm:w-auto">
+        <button className="group relative w-full overflow-hidden rounded-2xl bg-gradient-to-r from-gray-900 to-black border border-white/10 px-8 py-4 hover:border-green-500/50 transition-all duration-300">
+          <div className="absolute inset-0 bg-gradient-to-r from-green-500/0 via-green-500/10 to-green-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+          <span className="relative font-semibold flex items-center justify-center gap-2">
+            <span>EXPLORAR CATÁLOGO</span>
+            <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </span>
+        </button>
+      </Link>
+      
+      <button
+        onClick={handleCloseProducts}
+        className="group relative w-full sm:w-auto overflow-hidden rounded-2xl bg-gradient-to-r from-gray-900/50 to-black/50 border border-white/10 px-8 py-4 hover:border-red-500/50 transition-all duration-300"
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-red-500/0 via-red-500/10 to-red-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+        <span className="relative font-semibold flex items-center justify-center gap-2">
+          <X className="w-4 h-4" />
+          <span>FECHAR</span>
+        </span>
+      </button>
+    </div>
+    
+    {/* Efeito de texto flutuante */}
+    <div className="text-center mt-12">
+      <div className="inline-block bg-gradient-to-r from-white/5 to-white/10 backdrop-blur-sm border border-white/10 rounded-2xl px-6 py-3">
+        <p className="text-sm text-gray-300">✨ Design espelhado • Animações suaves • Interface premium</p>
+      </div>
+    </div>
+  </section>
+)}
+        
       </main>
 
       {/* Animações CSS */}
