@@ -475,11 +475,7 @@ export default function FitnessPage() {
     </div>
     
     {/* Efeito de texto flutuante */}
-    <div className="text-center mt-12">
-      <div className="inline-block bg-gradient-to-r from-white/5 to-white/10 backdrop-blur-sm border border-white/10 rounded-2xl px-6 py-3">
-        <p className="text-sm text-gray-300">✨ Design espelhado • Animações suaves • Interface premium</p>
-      </div>
-    </div>
+  
   </section>
 )}
         
