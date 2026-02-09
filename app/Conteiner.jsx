@@ -3,10 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { Search, ShoppingCart, User, Menu, X, Star, Zap, Shield, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
+import Navbar from "@/components/Navbar"; // Importe a navbar dos components
 
 export default function FitnessPage() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [cartItems] = useState(3);
   const [showProducts, setShowProducts] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -50,7 +49,20 @@ export default function FitnessPage() {
       color: "from-orange-500 to-red-600"
     }
   ];
-  
+
+  // Declarar nextSlide ANTES de usar nos effects
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  }, [slides.length]);
+
+  const prevSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  }, [slides.length]);
+
+  const goToSlide = (index) => {
+    setCurrentSlide(index);
+  };
+
   // Detectar tamanho da tela
   useEffect(() => {
     const checkMobile = () => {
@@ -63,23 +75,16 @@ export default function FitnessPage() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
   
-  // Auto slide
+  // Auto slide - CORRIGIDO: nextSlide agora está definido antes
   useEffect(() => {
-    if (showProducts) return; // Não avançar slides quando produtos estão abertos
+    if (showProducts) return; 
     
     const interval = setInterval(() => {
       nextSlide();
     }, 5000);
     
     return () => clearInterval(interval);
-  }, [currentSlide, showProducts]);
-  
-  const navItems = [
-    { href: "/", label: "HOME" },
-    { href: "/produtos", label: "PRODUTOS" },
-    { href: "/novidades", label: "NOVIDADES" },
-    { href: "/entregas", label: "ENTREGA" },
-  ];
+  }, [currentSlide, showProducts, nextSlide]); // Adicionado nextSlide como dependência
 
   const products = Array(6).fill({
     name: "Creatine XPLODE Power",
@@ -126,151 +131,12 @@ export default function FitnessPage() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-  }, [slides.length]);
-
-  const prevSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  }, [slides.length]);
-
-  const goToSlide = (index) => { // Removido : number
-    setCurrentSlide(index);
-  };
-
   const currentSlideData = slides[currentSlide];
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Header responsivo */}
-      <header className="sticky top-0 z-50 bg-black/95 backdrop-blur-sm supports-[backdrop-filter]:bg-black/80">
-        <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-3 md:py-4">
-          <nav className="flex items-center justify-between">
-            {/* Logo e menu mobile */}
-            <div className="flex items-center gap-2 sm:gap-3 lg:gap-6">
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="rounded-md p-2 hover:bg-gray-800 lg:hidden"
-                aria-label="Abrir menu"
-                aria-expanded={isMenuOpen}
-              >
-                {isMenuOpen ? <X size={isMobile ? 20 : 24} /> : <Menu size={isMobile ? 20 : 24} />}
-              </button>
-              
-              <Link 
-                href="/" 
-                className="flex items-center gap-1 sm:gap-2 text-lg sm:text-xl font-bold hover:text-green-400 transition-colors"
-              >
-                <span className="text-green-400 text-2xl sm:text-3xl">⚡</span>
-                <span className="hidden xs:inline">LOGO</span>
-              </Link>
-            </div>
-
-            {/* Navegação desktop */}
-            <div className="hidden lg:flex lg:items-center lg:gap-6 xl:gap-8">
-              {navItems.map((item, index) => (
-                <Link
-                  key={index}
-                  href={item.href}
-                  className="font-medium hover:text-green-400 transition-colors duration-200 text-sm xl:text-base px-2 py-1"
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </div>
-
-            {/* Ícones de ação */}
-            <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
-              {/* Barra de pesquisa - apenas desktop */}
-              <div className="hidden sm:block">
-                <div className="relative">
-                  <Search 
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" 
-                    size={isMobile ? 16 : 18} 
-                  />
-                  <input
-                    type="search"
-                    placeholder="Search..."
-                    className="w-32 sm:w-40 md:w-48 lg:w-56 xl:w-64 rounded-full border border-gray-700 bg-gray-900 py-1.5 sm:py-2 pl-8 sm:pl-10 pr-3 text-xs sm:text-sm focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-200"
-                  />
-                </div>
-              </div>
-
-              <div className="flex items-center gap-1 sm:gap-2">
-                <Link 
-                  href="/carrinho"
-                  className="group relative rounded-full p-1.5 sm:p-2 hover:bg-gray-800 transition-colors duration-200"
-                  aria-label="Carrinho de compras"
-                >
-                  <ShoppingCart 
-                    size={isMobile ? 18 : 20} 
-                    className="group-hover:text-green-400 transition-colors" 
-                  />
-                  <span className="absolute -right-1 -top-1 flex h-4 w-4 sm:h-5 sm:w-5 items-center justify-center rounded-full bg-green-500 text-[10px] sm:text-xs font-bold text-black">
-                    {cartItems}
-                  </span>
-                </Link>
-
-                <Link 
-                  href="/perfil"
-                  className="rounded-full p-1.5 sm:p-2 hover:bg-gray-800 transition-colors duration-200"
-                  aria-label="Perfil do usuário"
-                >
-                  <User size={isMobile ? 18 : 20} className="hover:text-green-400 transition-colors" />
-                </Link>
-              </div>
-            </div>
-          </nav>
-
-          {/* Menu mobile expandido */}
-          {isMenuOpen && (
-            <div className="mt-3 border-t border-gray-800 pt-3 lg:hidden animate-slideDown">
-              <div className="flex flex-col gap-1">
-                {navItems.map((item, index) => (
-                  <Link
-                    key={index}
-                    href={item.href}
-                    onClick={() => setIsMenuOpen(false)}
-                    className="rounded-md px-3 py-2 font-medium hover:bg-gray-800 hover:text-green-400 transition-colors text-sm sm:text-base"
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </div>
-              
-              {/* Barra de pesquisa mobile no menu */}
-              <div className="mt-3 pt-3 border-t border-gray-800">
-                <div className="relative">
-                  <Search 
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" 
-                    size={18} 
-                  />
-                  <input
-                    type="search"
-                    placeholder="Pesquisar produtos..."
-                    className="w-full rounded-full border border-gray-700 bg-gray-900 py-2 pl-10 pr-4 text-sm focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-200"
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Barra de pesquisa mobile separada */}
-        <div className="border-b border-gray-800 px-3 sm:px-4 py-2 sm:hidden">
-          <div className="relative">
-            <Search 
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" 
-              size={16} 
-            />
-            <input
-              type="search"
-              placeholder="Pesquisar produtos..."
-              className="w-full rounded-full border border-gray-700 bg-gray-900 py-2 pl-9 pr-4 text-sm focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-200"
-            />
-          </div>
-        </div>
-      </header>
+      {/* Header com Navbar importada */}
+      <Navbar />
 
       <main className="overflow-x-hidden">
         {/* Seção Hero com Slider */}

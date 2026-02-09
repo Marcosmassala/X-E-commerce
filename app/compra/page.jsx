@@ -1,12 +1,10 @@
 import React from 'react'
-import PerfilUsuario from './Meuperfil'
-import SliderBar from './sidebar'
+import Produto from './Carrinho'
 export default function page() {
   return (
     <div>
       
-      <PerfilUsuario />
-
+     <Produto />
     </div>
   )
 }

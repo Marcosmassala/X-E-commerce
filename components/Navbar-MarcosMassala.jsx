@@ -65,7 +65,7 @@ const Navbar = () => {
               />
             </div>
 
-            {/* Cart and User Actions */}
+           
             <div className="flex gap-3 items-center">
               <button className="relative p-2 hover:bg-gray-800 rounded-full transition-colors duration-200 group" aria-label="Shopping cart">
                 <ShoppingCart size={20} className="group-hover:text-green-400" />
@@ -81,7 +81,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
+       
         {isMobileMenuOpen && (
           <div className="lg:hidden px-6 py-4 border-t border-gray-800 bg-black">
             <div className="flex flex-col gap-4">
