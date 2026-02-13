@@ -1,285 +1,322 @@
-"use client";
-import React, { useState } from 'react';
-import { Eye, EyeOff, User, Mail, Lock, Dumbbell } from 'lucide-react';
+"use client"
 
-const SignupPage = () => {
+import { useState } from 'react';
+import { Mail, Lock, User, Eye, EyeOff, Phone, MapPin, Home } from 'lucide-react';
+import Link from 'next/link';
+import api from '../services/api';
+
+export default function CadastroPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  
+  // ✅ ESTADO COMPLETO - SEM confirmPassword e SEM arrays dinâmicos
   const [formData, setFormData] = useState({
-    fullName: '',
+    first_name: '',
+    last_name: '',
     email: '',
     password: '',
-    confirmPassword: '',
-    acceptTerms: false
+    contacts: [
+      {
+        phone_number: ''
+      }
+    ],
+    addresses: [
+      {
+        city: '',
+        street: ''
+      }
+    ]
   });
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
+    const { name, value } = e.target;
+    
+    // Para campos aninhados (contacts e addresses)
+    if (name.includes('.')) {
+      const [parent, index, child] = name.split('.');
+      setFormData(prev => {
+        const newData = { ...prev };
+        if (parent === 'contacts') {
+          newData.contacts[parseInt(index)] = {
+            ...newData.contacts[parseInt(index)],
+            [child]: value
+          };
+        } else if (parent === 'addresses') {
+          newData.addresses[parseInt(index)] = {
+            ...newData.addresses[parseInt(index)],
+            [child]: value
+          };
+        }
+        return newData;
+      });
+    } else {
+      // Campos normais
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
   };
 
-  const handleSubmit = (e) => {
+  // ✅ FUNÇÃO DE CADASTRO - SEM botões de adicionar/remover
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Formulário enviado:', formData);
-    
+    setLoading(true);
+    setError('');
+    setSuccess('');
+
+    // Validação de campos obrigatórios
+    if (!formData.first_name || !formData.last_name) {
+      setError('Nome e sobrenome são obrigatórios');
+      setLoading(false);
+      return;
+    }
+
+    if (!formData.password) {
+      setError('A senha é obrigatória');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      // ✅ Remove contatos e endereços vazios
+      const dataToSend = {
+        ...formData,
+        contacts: formData.contacts.filter(contact => contact.phone_number.trim() !== ''),
+        addresses: formData.addresses.filter(address => address.city.trim() !== '' && address.street.trim() !== '')
+      };
+      
+      console.log('📤 Enviando dados:', dataToSend);
+      
+      const response = await api.post('/auth/signup', dataToSend);
+      console.log('✅ Cadastro realizado:', response.data);
+      
+      setSuccess('Conta criada com sucesso! Redirecionando...');
+      
+      // Limpar formulário
+      setFormData({
+        first_name: '',
+        last_name: '',
+        email: '',
+        password: '',
+        contacts: [{ phone_number: '' }],
+        addresses: [{ city: '', street: '' }]
+      });
+      
+      // Redirecionar após 2 segundos
+      setTimeout(() => {
+        window.location.href = '/login';
+      }, 2000);
+      
+    } catch (error) {
+      console.error('❌ Erro no cadastro:', error.response?.data || error.message);
+      setError(error.response?.data?.message || 'Erro ao criar conta. Tente novamente.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-6xl flex flex-col md:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white">
-        {/* Left Side - Suplemento */}
-        <div className="md:w-2/5 bg-gradient-to-br from-black to-gray-900 p-8 md:p-12 flex flex-col justify-between text-white relative overflow-hidden">
-          {/* Decorative elements */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full -mr-16 -mt-16"></div>
-          <div className="absolute bottom-0 left-0 w-40 h-40 bg-green-600/10 rounded-full -ml-20 -mb-20"></div>
-          
-          <div className="text-center md:text-left relative z-10">
-            <div className="flex items-center justify-center md:justify-start mb-6">
-              <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mr-3">
-                <Dumbbell className="w-6 h-6 text-white" />
-              </div>
-              <h1 className="text-2xl font-bold text-green-400">POWER SUPPLEMENTS</h1>
-            </div>
-            
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Transforme seu
-              <br />
-              <span className="text-green-400">Corpo</span> e sua
-              <br />
-              <span className="text-green-400">Vida</span>
-            </h1>
-            <p className="text-lg text-gray-300 mb-8">
-              Alcance seus objetivos fitness com os melhores suplementos do mercado
-            </p>
-          </div>
-          
-          {/* Image container */}
-          <div className="relative h-64 flex items-center justify-center my-8">
-            <div className="relative">
-              {/* Supplement bottle */}
-              <div className="w-48 h-56 relative">
-                {/* Bottle shape */}
-                <div className="absolute inset-0 bg-gradient-to-b from-green-600 to-green-800 rounded-t-lg rounded-b-3xl shadow-2xl">
-                  <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-32 h-44 bg-gradient-to-b from-green-500 to-green-700 rounded-t-md rounded-b-2xl">
-                    {/* Label */}
-                    <div className="absolute top-8 left-1/2 transform -translate-x-1/2 w-24 h-32 bg-black rounded-lg border-2 border-green-400 flex items-center justify-center">
-                      <div className="text-center">
-                        <div className="text-green-400 font-bold text-xl">PRO</div>
-                        <div className="text-green-300 text-sm">WHEY</div>
-                        <div className="text-green-400 font-bold text-lg">100%</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Cap */}
-                <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 w-12 h-8 bg-green-400 rounded-t-lg"></div>
-                
-                {/* Whey powder effect */}
-                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-32 h-4 bg-gradient-to-r from-green-300 to-green-500 rounded-full blur-sm"></div>
-              </div>
-              
-              {/* Decorative weight plates */}
-              <div className="absolute -right-4 top-12 w-12 h-12 bg-black border-4 border-green-500 rounded-full flex items-center justify-center">
-                <span className="text-green-400 font-bold">20</span>
-              </div>
-              <div className="absolute -left-4 bottom-12 w-10 h-10 bg-black border-4 border-green-400 rounded-full flex items-center justify-center">
-                <span className="text-green-300 font-bold">10</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="text-center mt-8 relative z-10">
-            <p className="text-lg text-gray-300">
-              Já tem uma conta?{' '}
-              <a href="/login" className="font-bold text-green-400 hover:text-green-300 transition-colors underline">
-                Faça login
-              </a>
-            </p>
-          </div>
+    <div className="min-h-screen bg-black flex items-center justify-center p-4">
+      <div className="w-full max-w-2xl">
+        {/* Logo */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-white mb-1">ecommerce</h1>
+          <div className="w-12 h-1 bg-green-500 mx-auto rounded-full"></div>
         </div>
 
-        {/* Right Side - Form */}
-        <div className="md:w-3/5 p-8 md:p-12">
-          <div className="max-w-md mx-auto">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Criar Conta</h2>
-            <p className="text-gray-600 mb-8">
-              Cadastre-se para acessar descontos exclusivos e acompanhar seus pedidos
-            </p>
-
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Full Name Field */}
+        {/* Card de cadastro */}
+        <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
+          <h2 className="text-xl font-semibold text-white mb-6">Criar conta</h2>
+          
+          {/* Mensagens de erro/sucesso */}
+          {error && (
+            <div className="mb-4 p-3 bg-red-500/10 border border-red-500 rounded-lg text-red-500 text-sm">
+              {error}
+            </div>
+          )}
+          
+          {success && (
+            <div className="mb-4 p-3 bg-green-500/10 border border-green-500 rounded-lg text-green-500 text-sm">
+              {success}
+            </div>
+          )}
+          
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* ===== CAMPOS PESSOAIS ===== */}
+            <div className="grid grid-cols-2 gap-4">
+              {/* Nome */}
               <div>
-                <label className="block text-gray-800 mb-2 font-medium">
-                  Nome Completo
-                </label>
+                <label className="text-sm text-zinc-400 mb-1 block">Nome</label>
                 <div className="relative">
-                  <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                    <User size={20} />
-                  </div>
+                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-zinc-500 w-4 h-4" />
                   <input
                     type="text"
-                    name="fullName"
-                    value={formData.fullName}
+                    name="first_name"
+                    value={formData.first_name}
                     onChange={handleChange}
-                    className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                    placeholder="Digite seu nome completo"
+                    className="w-full bg-zinc-800 text-white pl-10 pr-4 py-2.5 rounded-lg border border-zinc-700 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 transition placeholder:text-zinc-500"
+                    placeholder="Seu nome"
                     required
+                    disabled={loading}
                   />
                 </div>
               </div>
 
-              {/* Email Field */}
+              {/* Sobrenome */}
               <div>
-                <label className="block text-gray-800 mb-2 font-medium">
-                  Email
-                </label>
+                <label className="text-sm text-zinc-400 mb-1 block">Sobrenome</label>
                 <div className="relative">
-                  <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                    <Mail size={20} />
-                  </div>
+                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-zinc-500 w-4 h-4" />
                   <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
+                    type="text"
+                    name="last_name"
+                    value={formData.last_name}
                     onChange={handleChange}
-                    className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                    placeholder="seu@email.com"
+                    className="w-full bg-zinc-800 text-white pl-10 pr-4 py-2.5 rounded-lg border border-zinc-700 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 transition placeholder:text-zinc-500"
+                    placeholder="Seu sobrenome"
                     required
+                    disabled={loading}
                   />
                 </div>
               </div>
+            </div>
 
-              {/* Password Field */}
-              <div>
-                <label className="block text-gray-800 mb-2 font-medium">
-                  Senha
-                </label>
-                <div className="relative">
-                  <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                    <Lock size={20} />
-                  </div>
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    className="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                    placeholder="Crie uma senha segura"
-                    required
-                  />
-                  <button
-                    type="button"
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </button>
-                </div>
-                <p className="text-sm text-gray-500 mt-2">
-                  Mínimo 8 caracteres com letras e números
-                </p>
-              </div>
-
-              {/* Confirm Password Field */}
-              <div>
-                <label className="block text-gray-800 mb-2 font-medium">
-                  Confirmar Senha
-                </label>
-                <div className="relative">
-                  <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                    <Lock size={20} />
-                  </div>
-                  <input
-                    type={showConfirmPassword ? "text" : "password"}
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    className="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                    placeholder="Digite sua senha novamente"
-                    required
-                  />
-                  <button
-                    type="button"
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  >
-                    {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </button>
-                </div>
-              </div>
-
-              {/* Terms and Conditions */}
-              <div className="flex items-start space-x-3">
+            {/* Email */}
+            <div>
+              <label className="text-sm text-zinc-400 mb-1 block">E-mail</label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-zinc-500 w-4 h-4" />
                 <input
-                  type="checkbox"
-                  id="terms"
-                  name="acceptTerms"
-                  checked={formData.acceptTerms}
+                  type="email"
+                  name="email"
+                  value={formData.email}
                   onChange={handleChange}
-                  className="mt-1 w-5 h-5 rounded border-gray-300 text-green-600 focus:ring-green-500"
+                  className="w-full bg-zinc-800 text-white pl-10 pr-4 py-2.5 rounded-lg border border-zinc-700 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 transition placeholder:text-zinc-500"
+                  placeholder="seu@email.com"
                   required
+                  disabled={loading}
                 />
-                <label htmlFor="terms" className="text-gray-700 text-sm">
-                  Eu concordo com os{' '}
-                  <a href="/terms" className="text-green-600 hover:text-green-800 font-medium">
-                    Termos de Serviço
-                  </a>{' '}
-                  e{' '}
-                  <a href="/privacy" className="text-green-600 hover:text-green-800 font-medium">
-                    Política de Privacidade
-                  </a>
-                </label>
               </div>
+            </div>
 
-              {/* Submit Button */}
-              <button
-                type="submit"
-                className="w-full bg-gradient-to-r from-black to-gray-800 text-white font-bold py-3 px-6 rounded-xl hover:from-gray-800 hover:to-black transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg shadow-green-500/20 border border-green-500/20"
-              >
-                Criar Conta
-              </button>
-
-              {/* Divider */}
-              <div className="flex items-center my-6">
-                <div className="flex-grow border-t border-gray-300"></div>
-                <span className="mx-4 text-gray-500">ou continue com</span>
-                <div className="flex-grow border-t border-gray-300"></div>
+            {/* ===== TELEFONE (FIXO) ===== */}
+            <div>
+              <label className="text-sm text-zinc-400 mb-1 block">Telefone</label>
+              <div className="relative">
+                <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-zinc-500 w-4 h-4" />
+                <input
+                  type="tel"
+                  name="contacts.0.phone_number"
+                  value={formData.contacts[0]?.phone_number || ''}
+                  onChange={handleChange}
+                  className="w-full bg-zinc-800 text-white pl-10 pr-4 py-2.5 rounded-lg border border-zinc-700 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 transition placeholder:text-zinc-500"
+                  placeholder="(00) 00000-0000"
+                  disabled={loading}
+                />
               </div>
+            </div>
 
-              {/* Social Login Buttons */}
-              <div className="grid grid-cols-2 gap-4">
+            {/* ===== ENDEREÇO (FIXO) ===== */}
+            <div className="space-y-3">
+              <label className="text-sm text-zinc-400 mb-1 block">Endereço</label>
+              <div className="space-y-2 p-3 bg-zinc-800/50 rounded-lg border border-zinc-700">
+                {/* Cidade */}
+                <div className="relative">
+                  <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-zinc-500 w-4 h-4" />
+                  <input
+                    type="text"
+                    name="addresses.0.city"
+                    value={formData.addresses[0]?.city || ''}
+                    onChange={handleChange}
+                    className="w-full bg-zinc-800 text-white pl-10 pr-4 py-2.5 rounded-lg border border-zinc-700 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 transition placeholder:text-zinc-500"
+                    placeholder="Cidade"
+                    disabled={loading}
+                  />
+                </div>
+                
+                {/* Rua */}
+                <div className="relative">
+                  <Home className="absolute left-3 top-1/2 transform -translate-y-1/2 text-zinc-500 w-4 h-4" />
+                  <input
+                    type="text"
+                    name="addresses.0.street"
+                    value={formData.addresses[0]?.street || ''}
+                    onChange={handleChange}
+                    className="w-full bg-zinc-800 text-white pl-10 pr-4 py-2.5 rounded-lg border border-zinc-700 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 transition placeholder:text-zinc-500"
+                    placeholder="Rua, número, bairro"
+                    disabled={loading}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* ===== SENHA ===== */}
+            <div>
+              <label className="text-sm text-zinc-400 mb-1 block">Senha</label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-zinc-500 w-4 h-4" />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="w-full bg-zinc-800 text-white pl-10 pr-10 py-2.5 rounded-lg border border-zinc-700 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 transition placeholder:text-zinc-500"
+                  placeholder="••••••••"
+                  required
+                  disabled={loading}
+                />
                 <button
                   type="button"
-                  className="flex items-center justify-center space-x-2 py-3 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-zinc-500 hover:text-zinc-400"
+                  disabled={loading}
                 >
-                  <div className="w-5 h-5 bg-blue-500 rounded-full"></div>
-                  <span>Facebook</span>
-                </button>
-                <button
-                  type="button"
-                  className="flex items-center justify-center space-x-2 py-3 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors"
-                >
-                  <div className="w-5 h-5 bg-red-500 rounded-full"></div>
-                  <span>Google</span>
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
+            </div>
 
-              {/* Promotional message */}
-              <div className="mt-6 p-4 bg-green-50 border border-green-100 rounded-xl">
-                <p className="text-sm text-gray-700 text-center">
-                  <span className="font-bold text-green-600">BÔNUS:</span> Ganhe 10% de desconto no seu primeiro pedido!
-                </p>
-              </div>
-            </form>
-          </div>
+            {/* Termos */}
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                id="termos"
+                className="w-4 h-4 bg-zinc-800 border-zinc-700 rounded focus:ring-green-500 focus:ring-offset-0 focus:ring-1 text-green-500"
+                required
+                disabled={loading}
+              />
+              <label htmlFor="termos" className="ml-2 text-xs text-zinc-400">
+                Aceito os{' '}
+                <Link href="/termos" className="text-green-500 hover:text-green-400">
+                  termos
+                </Link>
+              </label>
+            </div>
+
+            {/* Botão */}
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full bg-green-500 text-black font-medium py-2.5 px-4 rounded-lg transition focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-black ${
+                loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-green-400'
+              }`}
+            >
+              {loading ? 'Criando conta...' : 'Criar conta'}
+            </button>
+
+            {/* Login */}
+            <div className="text-center text-sm">
+              <span className="text-zinc-500">Já tem conta?</span>{' '}
+              <Link href="/login" className="text-green-500 hover:text-green-400 font-medium">
+                Entrar
+              </Link>
+            </div>
+          </form>
         </div>
       </div>
     </div>
   );
-};
-
-export default SignupPage;
+}
